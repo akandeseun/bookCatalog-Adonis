@@ -3,9 +3,13 @@ import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 export default class extends BaseSchema {
   protected tableName = 'users'
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
+      table.uuid('id').primary()
+      table.string('username').notNullable().unique()
+      table.string('email').notNullable().unique()
+      table.string('password').notNullable().unique()
+      table.dateTime('verifiedAt')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
@@ -15,7 +19,7 @@ export default class extends BaseSchema {
     })
   }
 
-  public async down () {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }
