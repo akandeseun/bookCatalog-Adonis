@@ -10,12 +10,13 @@ export default class CreateUserValidator {
       rules.email(),
       rules.unique({ table: 'users', column: 'email' }),
     ]),
-    password: schema.string(),
+    password: schema.string([rules.minLength(6)]),
   })
 
   public messages: CustomMessages = {
-    'required': 'The {{ field }} is required to create a new account',
+    'required': '{{ field }} is required to create a new account',
     'email.unique': 'User exists with email',
     'username.unique': 'username taken',
+    'minLength': '{{ field }} cannot be less than six(6) characters',
   }
 }

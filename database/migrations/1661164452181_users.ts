@@ -8,8 +8,8 @@ export default class extends BaseSchema {
       table.uuid('id').primary()
       table.string('username').notNullable().unique()
       table.string('email').notNullable().unique()
-      table.string('password').notNullable().unique()
-      table.dateTime('verifiedAt')
+      table.string('password').notNullable()
+      table.dateTime('verifiedAt').nullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
