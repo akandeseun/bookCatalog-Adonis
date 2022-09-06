@@ -37,7 +37,7 @@ export default class Book extends BaseModel {
   public updatedAt: DateTime
 
   @beforeCreate()
-  public static createBookId(book: Book) {
+  public static assignId(book: Book) {
     book.id = uuidv4()
   }
 }
