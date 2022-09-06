@@ -5,12 +5,13 @@ import UserSignInValidator from 'App/Validators/UserSignInValidator'
 import Hash from '@ioc:Adonis/Core/Hash'
 
 export default class UsersController {
-  public async createUser({ request, response }: HttpContextContract) {
+  public async createUser({ auth, request, response }: HttpContextContract) {
     // validate user input using custom validator
     const payload = await request.validate(createUserValidator)
 
     const user = await User.create(payload)
-    return response.status(201).json({ user })
+    const token = await auth.use('api').generate(user)
+    return response.status(201).json({ user, token })
   }
 
   public async authenticateUser({ request, response }: HttpContextContract) {
