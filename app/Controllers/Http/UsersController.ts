@@ -14,22 +14,34 @@ export default class UsersController {
     return response.status(201).json({ user, token })
   }
 
-  public async authenticateUser({ request, response }: HttpContextContract) {
+  public async authenticateUser({ auth, request, response }: HttpContextContract) {
     const payload = await request.validate(UserSignInValidator)
+    // try {
+    //   const token = await auth.use('api').attempt(payload.email, payload.password)
+    //   return token
+    // } catch (error) {
+    //   return response.unauthorized('Invalid credentials')
+    // }
 
-    const user = await User.findBy('email', payload.email)
-    if (!user) {
-      return response.status(400).json({
-        msg: 'Incorrect email or password',
+    try {
+      const user = await User.findBy('email', payload.email)
+      if (!user) {
+        return response.status(400).json({
+          msg: 'Incorrect email or password',
+        })
+      }
+      if (!(await Hash.verify(user.password, payload.password))) {
+        return response.status(400).json({
+          msg: 'Incorrect email or password',
+        })
+      }
+      const token = await auth.use('api').generate(user, { expiresIn: '30 days' })
+      return response.status(200).json({
+        msg: `welcome ${user.username}`,
+        token,
       })
+    } catch (error) {
+      return response.unauthorized('invalid credentials')
     }
-    if (!(await Hash.verify(user.password, payload.password))) {
-      return response.status(400).json({
-        msg: 'Incorrect email or password',
-      })
-    }
-    return response.status(200).json({
-      msg: `welcome ${user.username}`,
-    })
   }
 }
