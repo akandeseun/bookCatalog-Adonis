@@ -18,10 +18,10 @@
 |
 */
 
-import { Router } from '@adonisjs/core/build/standalone'
 import Route from '@ioc:Adonis/Core/Route'
 
 Route.group(() => {
   Route.post('/sign-up', 'UsersController.createUser')
   Route.post('/sign-in', 'UsersController.authenticateUser')
+  Route.post('/category', 'CategoryController.create')
 }).prefix('/api')
