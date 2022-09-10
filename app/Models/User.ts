@@ -8,8 +8,8 @@ import {
   manyToMany,
   ManyToMany,
 } from '@ioc:Adonis/Lucid/Orm'
+import Role from './Role'
 import { v4 as uuidv4 } from 'uuid'
-import Category from './Category'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -48,9 +48,9 @@ export default class User extends BaseModel {
     user.id = uuidv4()
   }
 
-  @manyToMany(() => Category, {
-    pivotTable: 'categorizables',
+  @manyToMany(() => Role, {
+    pivotTable: 'user_roles',
     pivotTimestamps: true,
   })
-  public category: ManyToMany<typeof Category>
+  public role: ManyToMany<typeof Role>
 }

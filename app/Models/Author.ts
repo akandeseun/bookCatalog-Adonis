@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeCreate, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeCreate, column, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
+import Category from './Category'
 import { v4 as uuidv4 } from 'uuid'
 
 export default class Author extends BaseModel {
@@ -19,4 +20,10 @@ export default class Author extends BaseModel {
   public static assignId(author: Author) {
     author.id = uuidv4()
   }
+
+  @manyToMany(() => Category, {
+    pivotTable: 'categorizables',
+    pivotTimestamps: true,
+  })
+  public category: ManyToMany<typeof Category>
 }
