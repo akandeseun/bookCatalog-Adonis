@@ -36,9 +36,11 @@ export default class UsersController {
         })
       }
       const token = await auth.use('api').generate(user, { expiresIn: '30 days' })
+      const current = auth.use('api').user
       return response.status(200).json({
         msg: `welcome ${user.username}`,
         token,
+        current,
       })
     } catch (error) {
       return response.unauthorized('invalid credentials')

@@ -2,15 +2,13 @@ import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 import { v4 as uuidv4 } from 'uuid'
 
 export default class extends BaseSchema {
-  protected tableName = 'categorizables'
+  protected tableName = 'roles'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary().defaultTo(uuidv4())
-      table.uuid('category_id').references('categories.id')
-      table.uuid('book_id').references('books.id').nullable()
-      table.uuid('author_id').references('authors.id').nullable()
-      table.unique(['category_id', 'book_id', 'author_id'])
+      table.string('name').notNullable().unique()
+      table.string('description').notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

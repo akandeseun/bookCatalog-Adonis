@@ -24,4 +24,5 @@ Route.group(() => {
   Route.post('/sign-up', 'UsersController.createUser')
   Route.post('/sign-in', 'UsersController.authenticateUser')
   Route.post('/category', 'CategoryController.create')
+  Route.post('/role', 'RoleController.create')
 }).prefix('/api')

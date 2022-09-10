@@ -52,5 +52,5 @@ export default class User extends BaseModel {
     pivotTable: 'categorizables',
     pivotTimestamps: true,
   })
-  public categories: ManyToMany<typeof Category>
+  public category: ManyToMany<typeof Category>
 }
