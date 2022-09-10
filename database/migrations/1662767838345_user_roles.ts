@@ -7,7 +7,9 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary().defaultTo(uuidv4())
+      table.uuid('role_id').references('roles.id')
       table.uuid('user_id').references('users.id')
+      table.unique(['role_id', 'user_id'])
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
