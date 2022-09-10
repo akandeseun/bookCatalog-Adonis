@@ -28,7 +28,16 @@ Route.group(() => {
 
 // Category routes
 Route.group(() => {
-  Route.post('/category', 'CategoryController.create')
+  Route.get('/category/', 'CategoryController.all')
+  Route.post('/category/new', 'CategoryController.create')
   Route.patch('/category/update/:id', 'CategoryController.update')
-  Route.patch('/category/delete/:id', 'CategoryController.delete')
+  Route.delete('/category/delete/:id', 'CategoryController.delete')
+}).prefix('/api')
+
+// Role routes
+Route.group(() => {
+  Route.get('/role/', 'RoleController.all')
+  Route.post('/role/new', 'RoleController.create')
+  Route.patch('/role/update/:id', 'RoleController.update')
+  Route.delete('/role/delete/:id', 'RoleController.delete')
 }).prefix('/api')
