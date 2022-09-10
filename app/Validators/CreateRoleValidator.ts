@@ -11,6 +11,6 @@ export default class CreateRoleValidator {
 
   public messages: CustomMessages = {
     'required': '{{ field }} is required to create a new role',
-    'rules.unique': 'Role already exists',
+    'name.unique': 'Role already exists',
   }
 }

@@ -9,7 +9,7 @@ export default class CreateCategoryValidator {
   })
 
   public messages: CustomMessages = {
-    'required': '{{ field }} is required to create a new category',
-    'rules.unique': 'Category already exists',
+    'required': '{{ field }} is required to create/update a new category',
+    'name.unique': 'Category already exists',
   }
 }
