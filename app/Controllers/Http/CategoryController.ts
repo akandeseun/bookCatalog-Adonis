@@ -1,6 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Category from 'App/Models/Category'
 import CreateCategoryValidator from 'App/Validators/CreateCategoryValidator'
+import Category from 'App/Models/Category'
+// import User from 'App/Models/User'
 
 export default class CategoryController {
   public async create({ request, response }: HttpContextContract) {
@@ -32,5 +33,18 @@ export default class CategoryController {
     }
     await category.delete()
     return response.status(200).json({ msg: 'category deleted' })
+  }
+
+  public async addUserCategory({ auth, response }: HttpContextContract) {
+    return response.json(await auth.user)
+  }
+
+  public async addCategory({ auth, request, response }: HttpContextContract) {
+    const categoryDetails = request.body()
+    const category = await Category.findByOrFail('name', categoryDetails.name)
+
+    const user = await auth.user
+    await user?.related('categories').attach([category.id])
+    return response.json(user)
   }
 }

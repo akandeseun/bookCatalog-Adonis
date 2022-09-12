@@ -9,7 +9,7 @@ export default class extends BaseSchema {
       table.uuid('id').primary().defaultTo(uuidv4())
       table.uuid('book_id').references('books.id').nullable()
       table.uuid('category_id').references('categories.id')
-      table.unique(['book_id', 'category_id'])
+      // table.unique(['book_id', 'category_id'])
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

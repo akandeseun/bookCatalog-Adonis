@@ -22,8 +22,8 @@ import Route from '@ioc:Adonis/Core/Route'
 
 // User Routes
 Route.group(() => {
-  Route.post('/sign-up', 'UserController.createUser')
-  Route.post('/sign-in', 'UserController.authenticateUser')
+  Route.post('/sign-up', 'AuthController.create')
+  Route.post('/sign-in', 'AuthController.authenticate')
 }).prefix('/api')
 
 // Category routes
@@ -45,3 +45,5 @@ Route.group(() => {
 })
   .prefix('/api')
   .middleware('auth')
+
+Route.post('/test/', 'CategoryController.addCategory')
