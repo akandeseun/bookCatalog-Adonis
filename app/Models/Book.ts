@@ -25,26 +25,20 @@ export default class Book extends BaseModel {
   @column()
   public language: string
 
-  @column()
-  public publisherId: string
-
-  @column()
-  public categoryId: string
-
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
+  @manyToMany(() => Category, {
+    pivotTable: 'books_categories',
+    pivotTimestamps: true,
+  })
+  public categories: ManyToMany<typeof Category>
+
   @beforeCreate()
   public static assignId(book: Book) {
     book.id = uuidv4()
   }
-
-  @manyToMany(() => Category, {
-    pivotTable: 'categorizables',
-    pivotTimestamps: true,
-  })
-  public category: ManyToMany<typeof Category>
 }

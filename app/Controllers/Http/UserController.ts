@@ -4,7 +4,7 @@ import createUserValidator from 'App/Validators/CreateUserValidator'
 import UserSignInValidator from 'App/Validators/UserSignInValidator'
 import Hash from '@ioc:Adonis/Core/Hash'
 
-export default class UsersController {
+export default class UserController {
   public async createUser({ auth, request, response }: HttpContextContract) {
     // validate user input using custom validator
     const payload = await request.validate(createUserValidator)
@@ -36,7 +36,7 @@ export default class UsersController {
         })
       }
       const token = await auth.use('api').generate(user, { expiresIn: '30 days' })
-      const current = auth.use('api').user
+      const current = auth.use('api').user!
       return response.status(200).json({
         msg: `welcome ${user.username}`,
         token,

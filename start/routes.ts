@@ -20,10 +20,10 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+// User Routes
 Route.group(() => {
-  Route.post('/sign-up', 'UsersController.createUser')
-  Route.post('/sign-in', 'UsersController.authenticateUser')
-  Route.post('/role', 'RoleController.create')
+  Route.post('/sign-up', 'UserController.createUser')
+  Route.post('/sign-in', 'UserController.authenticateUser')
 }).prefix('/api')
 
 // Category routes
@@ -32,7 +32,9 @@ Route.group(() => {
   Route.post('/category/new', 'CategoryController.create')
   Route.patch('/category/update/:id', 'CategoryController.update')
   Route.delete('/category/delete/:id', 'CategoryController.delete')
-}).prefix('/api')
+})
+  .prefix('/api')
+  .middleware('auth')
 
 // Role routes
 Route.group(() => {
@@ -40,4 +42,6 @@ Route.group(() => {
   Route.post('/role/new', 'RoleController.create')
   Route.patch('/role/update/:id', 'RoleController.update')
   Route.delete('/role/delete/:id', 'RoleController.delete')
-}).prefix('/api')
+})
+  .prefix('/api')
+  .middleware('auth')

@@ -8,8 +8,9 @@ import {
   manyToMany,
   ManyToMany,
 } from '@ioc:Adonis/Lucid/Orm'
-import Role from './Role'
+import Category from './Category'
 import { v4 as uuidv4 } from 'uuid'
+// import Role from './Role'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -36,6 +37,20 @@ export default class User extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
+  // Relationships
+  @manyToMany(() => Category, {
+    pivotTable: 'users_categories',
+    pivotTimestamps: true,
+  })
+  public categories: ManyToMany<typeof Category>
+
+  // @manyToMany(() => Role, {
+  //   pivotTable: 'user_roles',
+  //   pivotTimestamps: true,
+  // })
+  // public role: ManyToMany<typeof Role>
+
+  // Hooks
   @beforeSave()
   public static async hashPassword(User: User) {
     if (User.$dirty.password) {
@@ -47,10 +62,4 @@ export default class User extends BaseModel {
   public static assignId(user: User) {
     user.id = uuidv4()
   }
-
-  @manyToMany(() => Role, {
-    pivotTable: 'user_roles',
-    pivotTimestamps: true,
-  })
-  public role: ManyToMany<typeof Role>
 }
