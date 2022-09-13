@@ -26,6 +26,13 @@ export default class Author extends BaseModel {
   })
   public books: ManyToMany<typeof Book>
 
+  // Author <--> Category
+  @manyToMany(() => Category, {
+    pivotTable: 'author_categories',
+    pivotTimestamps: true,
+  })
+  public categories: ManyToMany<typeof Category>
+
   // Hooks
   @beforeCreate()
   public static assignId(author: Author) {

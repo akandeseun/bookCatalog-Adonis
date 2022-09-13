@@ -3,6 +3,7 @@ import { BaseModel, column, beforeCreate, manyToMany, ManyToMany } from '@ioc:Ad
 import { v4 as uuidv4 } from 'uuid'
 import Book from './Book'
 import User from './User'
+import Author from './Author'
 
 export default class Category extends BaseModel {
   @column({ isPrimary: true })
@@ -32,6 +33,13 @@ export default class Category extends BaseModel {
     pivotTimestamps: true,
   })
   public users: ManyToMany<typeof User>
+
+  // Category <--> Author
+  @manyToMany(() => Author, {
+    pivotTable: 'author_categories',
+    pivotTimestamps: true,
+  })
+  public authors: ManyToMany<typeof Author>
 
   // Hooks
   @beforeCreate()
