@@ -7,14 +7,11 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.uuid('id').primary()
       table.string('title').notNullable()
-      table.integer('year')
+      table.integer('year').nullable()
       // table.uuid('authorId').references('authors.id').onDelete('CASCADE')
-      table.string('isbn').unique()
-      table.string('series')
-      table.integer('volume')
-      table.string('language')
-      table.uuid('publisherId')
-      table.uuid('categoryId')
+      table.string('isbn').unique().nullable()
+      table.string('series').nullable()
+      table.integer('volume').nullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

@@ -20,8 +20,38 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
+// User Routes
 Route.group(() => {
-  Route.post('/sign-up', 'UsersController.createUser')
-  Route.post('/sign-in', 'UsersController.authenticateUser')
-  Route.post('/category', 'CategoryController.create')
+  Route.post('/sign-up', 'AuthController.create')
+  Route.post('/sign-in', 'AuthController.authenticate')
 }).prefix('/api')
+
+// Category routes
+Route.group(() => {
+  Route.get('/category/', 'CategoryController.all')
+  Route.post('/category/new', 'CategoryController.create')
+  Route.patch('/category/update/:id', 'CategoryController.update')
+  Route.delete('/category/delete/:id', 'CategoryController.delete')
+})
+  .prefix('/api')
+  .middleware('auth')
+
+// Role routes
+Route.group(() => {
+  Route.get('/role/', 'RoleController.all')
+  Route.post('/role/new', 'RoleController.create')
+  Route.patch('/role/update/:id', 'RoleController.update')
+  Route.delete('/role/delete/:id', 'RoleController.delete')
+})
+  .prefix('/api')
+  .middleware('auth')
+
+// Route.post('/test/', 'CategoryController.addCategory')
+
+// Book Routes
+Route.group(() => {
+  Route.post('/book/new', 'BookController.create')
+  Route.post('/book/category/:bookId', 'BookController.addCategory')
+})
+  .prefix('/api')
+  .middleware('auth')
