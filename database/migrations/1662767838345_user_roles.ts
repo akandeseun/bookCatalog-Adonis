@@ -8,7 +8,6 @@ export default class extends BaseSchema {
       table.bigIncrements('id').primary()
       table.uuid('user_id').references('users.id')
       table.uuid('role_id').references('roles.id')
-      table.unique(['role_id', 'user_id'])
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
