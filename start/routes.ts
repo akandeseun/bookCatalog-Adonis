@@ -51,6 +51,7 @@ Route.group(() => {
 // Book Routes
 Route.group(() => {
   Route.post('/book/new', 'BookController.create')
+  Route.post('/book/category/:catId', 'BookController.addCategory')
 })
   .prefix('/api')
   .middleware('auth')

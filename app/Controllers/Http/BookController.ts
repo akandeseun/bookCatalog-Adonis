@@ -11,9 +11,10 @@ export default class BookController {
   }
 
   public async addCategory({ params, request, response }: HttpContextContract) {
-    const book = await Book.findOrFail(params.id)
+    const book = await Book.findOrFail(params.catId)
     const category = await Category.findByOrFail('name', request.body().name)
     await book.related('categories').attach([category.id])
+    await book.load('categories')
     return response.ok(book)
   }
 }
