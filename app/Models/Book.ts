@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, beforeCreate, manyToMany, ManyToMany } from '@ioc:Adonis/Lucid/Orm'
-import Category from './Category'
 import { v4 as uuidv4 } from 'uuid'
+import Category from './Category'
+import Author from './Author'
 
 export default class Book extends BaseModel {
   @column({ isPrimary: true })
@@ -28,12 +29,23 @@ export default class Book extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
+  // Relationships
+
+  // Book <--> Category
   @manyToMany(() => Category, {
     pivotTable: 'books_categories',
     pivotTimestamps: true,
   })
   public categories: ManyToMany<typeof Category>
 
+  // Book <--> Author
+  @manyToMany(() => Author, {
+    pivotTable: 'book_authors',
+    pivotTimestamps: true,
+  })
+  public authors: ManyToMany<typeof Author>
+
+  // Hooks
   @beforeCreate()
   public static assignId(book: Book) {
     book.id = uuidv4()
