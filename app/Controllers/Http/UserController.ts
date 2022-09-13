@@ -9,6 +9,7 @@ export default class UserController {
 
     const user = await auth.user
     await user?.related('categories').attach([category.id])
+    await user?.load('categories')
     return response.json(user)
   }
 }

@@ -22,9 +22,6 @@ export default class Book extends BaseModel {
   @column()
   public volume: number
 
-  @column()
-  public language: string
-
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

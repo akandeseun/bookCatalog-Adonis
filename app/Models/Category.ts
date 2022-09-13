@@ -18,14 +18,17 @@ export default class Category extends BaseModel {
   public updatedAt: DateTime
 
   // Relationships
+
+  // Book <--> Category
   @manyToMany(() => Book, {
     pivotTable: 'books_categories',
     pivotTimestamps: true,
   })
   public books: ManyToMany<typeof Book>
 
+  // User <--> Category
   @manyToMany(() => User, {
-    pivotTable: 'books_categories',
+    pivotTable: 'users_categories',
     pivotTimestamps: true,
   })
   public users: ManyToMany<typeof User>

@@ -35,9 +35,9 @@ export default class CategoryController {
     return response.status(200).json({ msg: 'category deleted' })
   }
 
-  public async addUserCategory({ auth, response }: HttpContextContract) {
-    return response.json(await auth.user)
-  }
+  // public async addUserCategory({ auth, response }: HttpContextContract) {
+  //   return response.json(await auth.user)
+  // }
 
   public async addCategory({ auth, request, response }: HttpContextContract) {
     const categoryDetails = request.body()
@@ -45,6 +45,7 @@ export default class CategoryController {
 
     const user = await auth.user
     await user?.related('categories').attach([category.id])
+    await user?.load('categories')
     return response.json(user)
   }
 }

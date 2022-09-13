@@ -38,6 +38,7 @@ export default class User extends BaseModel {
   public updatedAt: DateTime
 
   // Relationships
+  // User <--> Category
   @manyToMany(() => Category, {
     pivotTable: 'users_categories',
     pivotTimestamps: true,
