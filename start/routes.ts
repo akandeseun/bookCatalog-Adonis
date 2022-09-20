@@ -30,8 +30,14 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/category/', 'CategoryController.all')
   Route.post('/category/new', 'CategoryController.create')
-  Route.patch('/category/update/:id', 'CategoryController.update')
-  Route.delete('/category/delete/:id', 'CategoryController.delete')
+  Route.patch('/category/update/:id', 'CategoryController.update').where(
+    'id',
+    Route.matchers.uuid()
+  )
+  Route.delete('/category/delete/:id', 'CategoryController.delete').where(
+    'id',
+    Route.matchers.uuid()
+  )
 })
   .prefix('/api')
   .middleware('auth')
@@ -40,8 +46,8 @@ Route.group(() => {
 Route.group(() => {
   Route.get('/role/', 'RoleController.all')
   Route.post('/role/new', 'RoleController.create')
-  Route.patch('/role/update/:id', 'RoleController.update')
-  Route.delete('/role/delete/:id', 'RoleController.delete')
+  Route.patch('/role/update/:id', 'RoleController.update').where('id', Route.matchers.uuid())
+  Route.delete('/role/delete/:id', 'RoleController.delete').where('id', Route.matchers.uuid())
 })
   .prefix('/api')
   .middleware('auth')
@@ -51,7 +57,13 @@ Route.group(() => {
 // Book Routes
 Route.group(() => {
   Route.post('/book/new', 'BookController.create')
-  Route.post('/book/category/:bookId', 'BookController.addCategory')
+  Route.post('/book/category/:bookId', 'BookController.addCategory').where(
+    'bookId',
+    Route.matchers.uuid()
+  )
 })
   .prefix('/api')
   .middleware('auth')
+
+// Optional parameters
+Route.get('/api/book/s/:searchf', 'BookController.findBook')
