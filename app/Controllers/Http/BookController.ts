@@ -12,6 +12,11 @@ export default class BookController {
     response.status(201).json({ book })
   }
 
+  public async all({ response }: HttpContextContract) {
+    const book = await Book.all()
+    return response.status(200).json({ book })
+  }
+
   public async update({ params, request, response }: HttpContextContract) {
     const payload = await request.validate(UpdateBookValidator)
     const book = await Book.findOrFail(params.bookId)
@@ -52,5 +57,10 @@ export default class BookController {
     await book.related('authors').attach([author.id])
     await book.load('authors')
     return response.status(200).json({ book })
+  }
+
+  public async findByCategory({ response }: HttpContextContract) {
+    const book = await Book.query().preload('categories')
+    return response.json(book)
   }
 }

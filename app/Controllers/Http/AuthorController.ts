@@ -29,8 +29,17 @@ export default class AuthorController {
     return response.status(200).json({ msg: 'author deleted' })
   }
 
+  public async findAuthor({ params, response }: HttpContextContract) {
+    const author = await Author.query().whereILike('name', `%${params.searchf}%`)
+    if (author.length === 0) {
+      return response.status(422).json({ msg: 'Author not found' })
+    }
+
+    return response.status(200).json({ author })
+  }
+
   // To work on adding duplicate categories
-  public async addCategory({ params, request, response }: HttpContextContract) {
+  public async attachCategory({ params, request, response }: HttpContextContract) {
     const author = await Author.findOrFail(params.authorId)
     const category = await Category.findByOrFail('name', request.body().name)
     await author.related('categories').attach([category.id])

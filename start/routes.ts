@@ -57,7 +57,8 @@ Route.group(() => {
 // Book Routes
 Route.group(() => {
   Route.post('/book/new', 'BookController.create')
-  Route.post('/book/category/:bookId', 'BookController.addCategory').where(
+  Route.get('/book', 'BookController.all')
+  Route.post('/book/category/:bookId', 'BookController.attachCategory').where(
     'bookId',
     Route.matchers.uuid()
   )
@@ -67,3 +68,4 @@ Route.group(() => {
 
 // Optional parameters
 Route.get('/api/book/s/:searchf', 'BookController.findBook')
+Route.get('/api/book/cat', 'BookController.findByCategory')

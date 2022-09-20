@@ -29,7 +29,7 @@ export default class CategoryController {
   public async delete({ params, response }: HttpContextContract) {
     const category = await Category.find(params.id)
     if (!category) {
-      return response.badRequest('category not found')
+      return response.status(400).json({ msg: 'category not found' })
     }
     await category.delete()
     return response.status(200).json({ msg: 'category deleted' })
