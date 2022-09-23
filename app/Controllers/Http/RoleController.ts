@@ -11,10 +11,7 @@ export default class RoleController {
 
   public async update({ params, request, response }: HttpContextContract) {
     const payload = await request.validate(CreateRoleValidator)
-    const role = await Role.find(params.id)
-    if (!role) {
-      return response.badRequest('Role not found')
-    }
+    const role = await Role.findOrFail(params.id)
     role.merge(payload)
     await role.save()
     return response.ok(role)
@@ -23,13 +20,12 @@ export default class RoleController {
   public async all({ response }: HttpContextContract) {
     const role = await Role.all()
     return response.ok(role)
+    // const user = await auth.user?.preload('roles')
+    // return response.json(user)
   }
 
   public async delete({ params, response }: HttpContextContract) {
-    const role = await Role.find(params.id)
-    if (!role) {
-      return response.badRequest('role not found')
-    }
+    const role = await Role.findOrFail(params.id)
     await role.delete()
     return response.status(200).json({ msg: 'role deleted' })
   }

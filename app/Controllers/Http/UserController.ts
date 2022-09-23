@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-// import User from 'App/Models/User'
+import User from 'App/Models/User'
 import Category from 'App/Models/Category'
 import Role from 'App/Models/Role'
 
@@ -14,9 +14,9 @@ export default class UserController {
     return response.status(200).json(user)
   }
 
-  public async assignRole({ auth, request, response }: HttpContextContract) {
+  public async assignRole({ request, response, params }: HttpContextContract) {
     const role = await Role.findByOrFail('name', request.body().name)
-    const user = await auth.user
+    const user = await User.findOrFail(params.userId)
     await user?.related('roles').attach([role.id])
     await user?.load('roles')
     return response.status(200).json(user)
