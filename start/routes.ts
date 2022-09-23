@@ -62,6 +62,10 @@ Route.group(() => {
     'bookId',
     Route.matchers.uuid()
   )
+  Route.post('/book/remove/category/:authorId', 'BookController.removeCategory').where(
+    'bookId',
+    Route.matchers.uuid()
+  )
 })
   .prefix('/api')
   .middleware('auth')
@@ -70,6 +74,10 @@ Route.group(() => {
   Route.post('/author/new', 'AuthorController.create')
   Route.get('/author', 'AuthorController.all')
   Route.post('/author/category/:authorId', 'AuthorController.attachCategory').where(
+    'authorId',
+    Route.matchers.uuid()
+  )
+  Route.post('/author/remove/category/:authorId', 'AuthorController.removeCategory').where(
     'authorId',
     Route.matchers.uuid()
   )

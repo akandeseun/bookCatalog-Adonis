@@ -49,6 +49,17 @@ export default class AuthorController {
     return response.status(200).json({ author })
   }
 
+  public async removeCategory({ params, request, response }: HttpContextContract) {
+    const author = await Author.findOrFail(params.authorId)
+    const category = await Category.findByOrFail('name', request.body().name)
+    await author.related('categories').detach([category.id])
+    await author.load('categories')
+    return response.status(200).json({
+      msg: 'Category removed',
+      author,
+    })
+  }
+
   // to re-adjust
   public async findAuthorByCategory({ response }: HttpContextContract) {
     const author = await Author.query().whereHas('categories', (categoryQuery) => {

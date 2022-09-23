@@ -51,6 +51,17 @@ export default class BookController {
     return response.status(200).json({ book })
   }
 
+  public async removeCategory({ params, request, response }: HttpContextContract) {
+    const book = await Book.findOrFail(params.authorId)
+    const category = await Category.findByOrFail('name', request.body().name)
+    await book.related('categories').detach([category.id])
+    await book.load('categories')
+    return response.status(200).json({
+      msg: 'Category removed',
+      book,
+    })
+  }
+
   public async addAuthor({ params, request, response }: HttpContextContract) {
     const book = await Book.findOrFail(params.bookId)
     const author = await Author.findByOrFail('name', request.body().name)
