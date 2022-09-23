@@ -43,7 +43,7 @@ export default class BookController {
     return response.status(200).json({ book })
   }
 
-  public async addCategory({ params, request, response }: HttpContextContract) {
+  public async attachCategory({ params, request, response }: HttpContextContract) {
     const book = await Book.findOrFail(params.bookId)
     const category = await Category.findByOrFail('name', request.body().name)
     await book.related('categories').attach([category.id])
@@ -59,8 +59,18 @@ export default class BookController {
     return response.status(200).json({ book })
   }
 
+  // to re adjust
   public async findByCategory({ response }: HttpContextContract) {
-    const book = await Book.query().preload('categories')
+    const book = await Book.query().whereHas('categories', (categoryQuery) => {
+      categoryQuery.where('name', 'comedy')
+    })
     return response.json(book)
+  }
+
+  public async findByAuthor({ response }: HttpContextContract) {
+    const book = await Book.query().whereHas('authors', (authorQuery) => {
+      authorQuery.where('name', 'martin')
+    })
+    return response.status(200).json({ book })
   }
 }

@@ -30,13 +30,15 @@ export default class AuthorController {
   }
 
   public async findAuthor({ params, response }: HttpContextContract) {
-    const author = await Author.query().whereILike('name', `%${params.searchf}%`)
+    const author = await Author.query().whereILike('name', `%${params.searchf}%`).preload('books')
     if (author.length === 0) {
       return response.status(422).json({ msg: 'Author not found' })
     }
 
     return response.status(200).json({ author })
   }
+
+  // STILL NEEDS ADJUSTMENT
 
   // To work on adding duplicate categories
   public async attachCategory({ params, request, response }: HttpContextContract) {
@@ -45,5 +47,13 @@ export default class AuthorController {
     await author.related('categories').attach([category.id])
     await author.load('categories')
     return response.status(200).json({ author })
+  }
+
+  // to re-adjust
+  public async findAuthorByCategory({ response }: HttpContextContract) {
+    const author = await Author.query().whereHas('categories', (categoryQuery) => {
+      categoryQuery.where('name', 'comedy')
+    })
+    return response.json({ author })
   }
 }

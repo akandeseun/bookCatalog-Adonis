@@ -66,6 +66,18 @@ Route.group(() => {
   .prefix('/api')
   .middleware('auth')
 
-// Optional parameters
+Route.group(() => {
+  Route.post('/author/new', 'AuthorController.create')
+  Route.get('/author', 'AuthorController.all')
+  Route.post('/author/category/:authorId', 'AuthorController.attachCategory').where(
+    'authorId',
+    Route.matchers.uuid()
+  )
+  Route.delete('/author/delete/:id', 'AuthorController.delete')
+}).prefix('/api')
+
+// Optional parameters (Still testing )
 Route.get('/api/book/s/:searchf', 'BookController.findBook')
 Route.get('/api/book/cat', 'BookController.findByCategory')
+Route.get('/api/author/cat', 'AuthorController.findAuthorByCategory')
+Route.post('/api/user/role/:userId', 'UserController.assignRole')

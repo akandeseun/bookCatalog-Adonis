@@ -20,6 +20,8 @@ export default class RoleController {
   public async all({ response }: HttpContextContract) {
     const role = await Role.all()
     return response.ok(role)
+    // const user = await auth.user?.preload('roles')
+    // return response.json(user)
   }
 
   public async delete({ params, response }: HttpContextContract) {
