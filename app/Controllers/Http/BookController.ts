@@ -35,6 +35,11 @@ export default class BookController {
       .whereILike('title', `%${params.searchf}%`)
       .orWhereILike('isbn', params.searchf)
       .orWhereILike('year', `%${params.searchf}%`)
+      .orWhereHas('authors', (authorQuery) => {
+        authorQuery.whereILike('name', `%${params.searchf}%`)
+      })
+      .preload('authors')
+      .preload('categories')
 
     if (book.length === 0) {
       return response.status(422).json({ msg: 'Book not found' })
