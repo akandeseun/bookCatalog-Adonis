@@ -51,9 +51,20 @@ export default class BookController {
   public async attachCategory({ params, request, response }: HttpContextContract) {
     const book = await Book.findOrFail(params.bookId)
     const category = await Category.findByOrFail('name', request.body().name)
-    await book.related('categories').attach([category.id])
     await book.load('categories')
-    return response.status(200).json({ book })
+    let results = book.categories
+    try {
+      for (const member of results) {
+        if (member.id === category.id) {
+          return response.status(400).json({
+            msg: 'Category exists on book',
+          })
+        }
+        await book.related('categories').attach([category.id])
+        await book.load('categories')
+        return response.status(200).json({ book })
+      }
+    } catch (error) {}
   }
 
   public async removeCategory({ params, request, response }: HttpContextContract) {
