@@ -1,14 +1,13 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'favourites'
+  protected tableName = 'book_languages'
 
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.uuid('id').primary()
-      table.uuid('favouritableId').notNullable()
-      table.string('favouriteableType').notNullable()
-      table.uuid('userId').notNullable()
+      table.bigIncrements('id').primary()
+      table.uuid('book_id').references('books.id')
+      table.uuid('language_id').references('languages.id')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

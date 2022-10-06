@@ -3,6 +3,8 @@ import { BaseModel, column, beforeCreate, manyToMany, ManyToMany } from '@ioc:Ad
 import { v4 as uuidv4 } from 'uuid'
 import Category from './Category'
 import Author from './Author'
+import Language from './Language'
+import Publisher from './Publisher'
 
 export default class Book extends BaseModel {
   @column({ isPrimary: true })
@@ -44,6 +46,20 @@ export default class Book extends BaseModel {
     pivotTimestamps: true,
   })
   public authors: ManyToMany<typeof Author>
+
+  // Book <--> Language
+  @manyToMany(() => Language, {
+    pivotTable: 'book_languages',
+    pivotTimestamps: true,
+  })
+  public languages: ManyToMany<typeof Language>
+
+  // Book <--> Publisher
+  @manyToMany(() => Publisher, {
+    pivotTable: 'book_publishers',
+    pivotTimestamps: true,
+  })
+  public publishers: ManyToMany<typeof Publisher>
 
   // Hooks
   @beforeCreate()
