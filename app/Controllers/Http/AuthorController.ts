@@ -42,11 +42,25 @@ export default class AuthorController {
 
   // To work on adding duplicate categories
   public async attachCategory({ params, request, response }: HttpContextContract) {
-    const author = await Author.findOrFail(params.authorId)
     const category = await Category.findByOrFail('name', request.body().name)
-    await author.related('categories').attach([category.id])
+    const author = await Author.findOrFail(params.authorId)
     await author.load('categories')
-    return response.status(200).json({ author })
+    let results = author.categories
+    // Checking for and avoiding duplicate categories
+    try {
+      for (const member of results) {
+        if (member.id === category.id) {
+          return response.status(400).json({
+            msg: 'Category exists on Author',
+          })
+        }
+      }
+      await author.related('categories').attach([category.id])
+      await author.load('categories')
+      return response.status(200).json({ author })
+    } catch (error) {
+      return response.status(400).json(error.message)
+    }
   }
 
   public async removeCategory({ params, request, response }: HttpContextContract) {

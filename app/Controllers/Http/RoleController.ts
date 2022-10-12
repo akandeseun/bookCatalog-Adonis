@@ -16,7 +16,7 @@ export default class RoleController {
     await role.save()
     return response.ok(role)
   }
-
+  // To adjust
   public async all({ response }: HttpContextContract) {
     const role = await Role.all()
     return response.ok(role)

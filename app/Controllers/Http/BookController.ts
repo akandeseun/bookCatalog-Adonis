@@ -35,6 +35,11 @@ export default class BookController {
       .whereILike('title', `%${params.searchf}%`)
       .orWhereILike('isbn', params.searchf)
       .orWhereILike('year', `%${params.searchf}%`)
+      .orWhereHas('authors', (authorQuery) => {
+        authorQuery.whereILike('name', `%${params.searchf}%`)
+      })
+      .preload('authors')
+      .preload('categories')
 
     if (book.length === 0) {
       return response.status(422).json({ msg: 'Book not found' })
@@ -46,9 +51,20 @@ export default class BookController {
   public async attachCategory({ params, request, response }: HttpContextContract) {
     const book = await Book.findOrFail(params.bookId)
     const category = await Category.findByOrFail('name', request.body().name)
-    await book.related('categories').attach([category.id])
     await book.load('categories')
-    return response.status(200).json({ book })
+    let results = book.categories
+    try {
+      for (const member of results) {
+        if (member.id === category.id) {
+          return response.status(400).json({
+            msg: 'Category exists on book',
+          })
+        }
+        await book.related('categories').attach([category.id])
+        await book.load('categories')
+        return response.status(200).json({ book })
+      }
+    } catch (error) {}
   }
 
   public async removeCategory({ params, request, response }: HttpContextContract) {
