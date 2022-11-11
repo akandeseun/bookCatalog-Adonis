@@ -11,6 +11,7 @@ import {
 import Category from './Category'
 import { v4 as uuidv4 } from 'uuid'
 import Role from './Role'
+import Permission from './Permission'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -51,6 +52,13 @@ export default class User extends BaseModel {
     pivotTimestamps: true,
   })
   public roles: ManyToMany<typeof Role>
+
+  // // User <--> Permissions
+  @manyToMany(() => Permission, {
+    pivotTable: 'user_permissions',
+    pivotTimestamps: true,
+  })
+  public permissions: ManyToMany<typeof Permission>
 
   // Hooks
   @beforeSave()
