@@ -146,4 +146,11 @@ export default class BookController {
     })
     return response.status(200).json({ book })
   }
+
+  public async findByPublisher({ response }: HttpContextContract) {
+    const book = await Book.query().whereHas('publishers', (publisherQuery) => {
+      publisherQuery.where('name', 'KwekuBooks')
+    })
+    return response.status(200).json({ book })
+  }
 }

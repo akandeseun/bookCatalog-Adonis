@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Publisher from 'App/Models/Publisher'
+import Book from 'App/Models/Book'
 import CreatePublisherValidator from 'App/Validators/CreatePublisherValidator'
 
 export default class PublisherController {
@@ -30,4 +31,9 @@ export default class PublisherController {
     await publisher.delete()
     return response.ok(publisher)
   }
+
+  // public async attachBook({ params, request, response }: HttpContextContract) {
+  //   const publisher = await Publisher.findOrFail(params.publisherId)
+  //   const {name} = await
+  // }
 }

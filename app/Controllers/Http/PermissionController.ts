@@ -1,6 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import CreatePermissionValidator from 'App/Validators/CreatePermissionValidator'
 import Permission from 'App/Models/Permission'
+import Role from 'App/Models/Role'
 
 export default class PermissionController {
   public async create({ request, response }: HttpContextContract) {
@@ -26,5 +27,14 @@ export default class PermissionController {
     const permission = await Permission.findOrFail(params.id)
     await permission.delete()
     return response.ok('deleted')
+  }
+
+  public async attachRole({ params, request, response }: HttpContextContract) {
+    const permission = await Permission.findOrFail(params.id)
+    const { name } = await request.body()
+    const role = await Role.findByOrFail('name', name)
+    await permission.related('roles').attach([role.id])
+    await permission.load('roles')
+    return response.status(200).json({ permission })
   }
 }
