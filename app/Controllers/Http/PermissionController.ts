@@ -29,12 +29,12 @@ export default class PermissionController {
     return response.ok('deleted')
   }
 
-  public async attachRole({ params, request, response }: HttpContextContract) {
-    const permission = await Permission.findOrFail(params.id)
-    const { name } = await request.body()
-    const role = await Role.findByOrFail('name', name)
-    await permission.related('roles').attach([role.id])
-    await permission.load('roles')
-    return response.status(200).json({ permission })
-  }
+  // public async attachRole({ params, request, response }: HttpContextContract) {
+  //   const permission = await Permission.findOrFail(params.id)
+  //   const { name } = await request.body()
+  //   const role = await Role.findByOrFail('name', name)
+  //   await permission.related('roles').attach([role.id])
+  //   await permission.load('roles')
+  //   return response.status(200).json({ permission })
+  // }
 }
