@@ -43,9 +43,9 @@ export default class BookController {
       .orWhereHas('categories', (categoryQuery) => {
         categoryQuery.whereILike('name', `%${params.searchf}%`)
       })
-      // .orWhereHas('publishers', () => {
-
-      // })
+      .orWhereHas('publishers', (publisherQuery) => {
+        publisherQuery.whereILike('name', `%${params.searchf}%`)
+      })
       .preload('authors')
       .preload('categories')
 
