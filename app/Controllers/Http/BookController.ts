@@ -56,6 +56,7 @@ export default class BookController {
     return response.status(200).json({ book })
   }
 
+  // Attach Category to Book
   public async attachCategory({ params, request, response }: HttpContextContract) {
     const book = await Book.findOrFail(params.bookId)
     const category = await Category.findByOrFail('name', request.body().name)
@@ -153,10 +154,10 @@ export default class BookController {
   //   return response.status(200).json({ book })
   // }
 
-  public async findByPublisher({ response }: HttpContextContract) {
-    const book = await Book.query().whereHas('publishers', (publisherQuery) => {
-      publisherQuery.where('name', 'KwekuBooks')
-    })
-    return response.status(200).json({ book })
-  }
+  // public async findByPublisher({ response }: HttpContextContract) {
+  //   const book = await Book.query().whereHas('publishers', (publisherQuery) => {
+  //     publisherQuery.where('name', 'KwekuBooks')
+  //   })
+  //   return response.status(200).json({ book })
+  // }
 }
