@@ -40,7 +40,7 @@ export default class CategoryController {
   // }
 
   public async addCategory({ auth, request, response }: HttpContextContract) {
-    const categoryDetails = request.body()
+    const categoryDetails = await request.body()
     const category = await Category.findByOrFail('name', categoryDetails.name)
 
     const user = await auth.user
