@@ -40,6 +40,12 @@ export default class BookController {
       .orWhereHas('authors', (authorQuery) => {
         authorQuery.whereILike('name', `%${params.searchf}%`)
       })
+      .orWhereHas('categories', (categoryQuery) => {
+        categoryQuery.whereILike('name', `%${params.searchf}%`)
+      })
+      // .orWhereHas('publishers', () => {
+
+      // })
       .preload('authors')
       .preload('categories')
 
@@ -133,19 +139,19 @@ export default class BookController {
   }
 
   // to re adjust
-  public async findByCategory({ response }: HttpContextContract) {
-    const book = await Book.query().whereHas('categories', (categoryQuery) => {
-      categoryQuery.where('name', 'comedy')
-    })
-    return response.json(book)
-  }
+  // public async findByCategory({ response }: HttpContextContract) {
+  //   const book = await Book.query().whereHas('categories', (categoryQuery) => {
+  //     categoryQuery.where('name', 'comedy')
+  //   })
+  //   return response.json(book)
+  // }
 
-  public async findByAuthor({ response }: HttpContextContract) {
-    const book = await Book.query().whereHas('authors', (authorQuery) => {
-      authorQuery.where('name', 'martin')
-    })
-    return response.status(200).json({ book })
-  }
+  // public async findByAuthor({ response }: HttpContextContract) {
+  //   const book = await Book.query().whereHas('authors', (authorQuery) => {
+  //     authorQuery.where('name', 'martin')
+  //   })
+  //   return response.status(200).json({ book })
+  // }
 
   public async findByPublisher({ response }: HttpContextContract) {
     const book = await Book.query().whereHas('publishers', (publisherQuery) => {
