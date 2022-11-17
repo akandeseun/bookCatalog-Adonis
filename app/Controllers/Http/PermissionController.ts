@@ -1,7 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import CreatePermissionValidator from 'App/Validators/CreatePermissionValidator'
 import Permission from 'App/Models/Permission'
-import Role from 'App/Models/Role'
+// import Role from 'App/Models/Role'
 
 export default class PermissionController {
   public async create({ request, response }: HttpContextContract) {
